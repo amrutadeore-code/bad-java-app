@@ -33,8 +33,8 @@ pipeline {
 		
 		stage('Install Semgrep') {
             steps {
-                bat '"C:\Users\deore\AppData\Local\Microsoft\WindowsApps\py.exe" -m pip install --upgrade pip'
-                bat '"C:\Users\deore\AppData\Local\Microsoft\WindowsApps\py.exe" -m pip install semgrep'
+                bat '"C:\\Users\\deore\\AppData\\Local\\Microsoft\\WindowsApps\\py.exe" -m pip install --upgrade pip'
+                bat '"C:\\Users\\deore\\AppData\\Local\\Microsoft\\WindowsApps\\py.exe" -m pip install semgrep'
             }
         }
 		
