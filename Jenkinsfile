@@ -5,6 +5,13 @@ pipeline {
         jdk 'JDK8'
         maven 'Maven3'
     }
+	
+	environment {
+      // SEMGREP_BASELINE_REF = ""
+
+        SEMGREP_APP_TOKEN = credentials('SEMGREP_APP_TOKEN')
+        SEMGREP_PR_ID = "${env.CHANGE_ID}"
+	}
 
     options {
         timestamps()
@@ -23,6 +30,19 @@ pipeline {
                 bat 'mvn -version'
             }
         }
+		
+		stage('Install Semgrep') {
+            steps {
+                bat 'py -m pip install --upgrade pip'
+                bat 'py -m pip install semgrep'
+            }
+        }
+		
+		stage('Semgrep Scan') {
+            steps {
+                bat 'semgrep ci'
+            }
+        }
 
         stage('Build WAR') {
             steps {
@@ -39,22 +59,3 @@ pipeline {
         }
     }
 }
-pipeline {
-    agent any
-  environment {
-      // SEMGREP_BASELINE_REF = ""
-
-        SEMGREP_APP_TOKEN = credentials('SEMGREP_APP_TOKEN')
-        SEMGREP_PR_ID = "${env.CHANGE_ID}"
-
-      //  SEMGREP_TIMEOUT = "300"
-    }
-    stages {
-      stage('Semgrep-Scan') {
-          steps {
-            sh 'pip3 install semgrep'
-            sh 'semgrep ci'
-          }
-      }
-    }
-  }
